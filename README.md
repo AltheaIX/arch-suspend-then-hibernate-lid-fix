@@ -79,8 +79,43 @@ $ sudo systemctl suspend-then-hibernate
 ```
 ```
 $ sudo journalctl -f -u systemd-logind
+
 Jan xx xx:xx:09 user systemd-logind[483]: The system will suspend and later hibernate now!
 Jan xx xx:xx:44 user systemd-logind[483]: Operation 'suspend-then-hibernate' finished.
 ```
 
 ## Solution (WIP)
+First of all, I would assume you have correctly configured your hibernation setting. Such as, GRUB Config, Resume on HOOKS, Disk Swap and when you use
+```
+$ sudo systemctl hibernate
+```
+You would need to use your power button to activate your device and it restores all of your applications like when you hibernated it.
+
+What we want to achieve is
+```
+lid close
+  ↓
+suspend (fast, low power)
+  ↓ after delay
+hibernate (zero power)
+```
+
+### 1. Configure Logind
+To start with, you will need to Configure Logind to make it ignore Lid Switch's Event.
+First, you will need to make the override config. (I have provided the files on the repository)
+```
+$ sudo mkdir -p /etc/systemd/logind.conf.d
+$ sudo nano /etc/systemd/logind.conf.d/logind.override.conf
+```
+Then put these on your logind.override.conf
+```
+[Login]
+HandleLidSwitch=ignore
+HandleLidSwitchExternalPower=ignore
+HandleLidSwitchDocked=ignore
+```
+Save it then restart your system, to ensure you configured it correctly. Run this command
+```
+$ sudo systemd-analyze cat-config /etc/systemd/logind.conf
+```
+Scroll down and if you see your override config, then you good. Try to close and open your laptop's lid, It shouldn't do anything now.
