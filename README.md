@@ -13,6 +13,14 @@ This setup was tested on:
 - Kernel 6.18.5 (zen)
 - GRUB 2:2.14rc1
 
+## Table of Contents
+- [Overview](#arch-linux-suspend-then-hibernate-on-lid-close)
+- [Motivation](#motivation)
+- [Why This Fails](#why-this-fails)
+- [Solution](#solution)
+- [Issues](#issues)
+
+
 ## Motivation
 Coming from MacOS, I was used to closing the laptop lid and leaving the device for days with almost no battery drain.
 
@@ -47,7 +55,7 @@ $ sudo journalctl -f -u systemd-logind
 You will see something similar to these logs
 ```Bash
 Jan xx xx:xx:37 user systemd-logind[483]: Lid closed.
-Jan xx xx:x:37 user systemd-logind[483]: Suspending...
+Jan xx xx:xx:37 user systemd-logind[483]: Suspending...
 Jan xx xx:xx:35 user systemd-logind[483]: Lid opened.
 Jan xx xx:xx:35 user systemd-logind[483]: Operation 'suspend' finished.
 ```
@@ -90,6 +98,7 @@ First of all, I would assume you have correctly configured your hibernation sett
 $ sudo systemctl hibernate
 ```
 You would need to use your power button to activate your device and it restores all of your applications like when you hibernated it.
+If systemctl hibernate does not fully power off and restore state, do not proceed.
 
 What we want to achieve is
 ```
@@ -180,3 +189,6 @@ Apply the changes by restarting ACPID.
 $ sudo systemctl restart acpid
 ```
 Then you can try to Close and Open your laptop lid again, it should work perfectly now.
+
+## Issues
+If you have issues with this setup, you could open a new issues on this repository.
