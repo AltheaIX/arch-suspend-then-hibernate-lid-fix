@@ -102,7 +102,7 @@ hibernate (zero power)
 
 ### 1. Configure Logind
 To start with, you will need to Configure Logind to make it ignore Lid Switch's Event.
-First, you will need to make the override config. (I have provided the files on the repository)
+First, you will need to make the override config. (Configuration files is provided on the repository)
 ```
 $ sudo mkdir -p /etc/systemd/logind.conf.d
 $ sudo nano /etc/systemd/logind.conf.d/logind_override.conf
@@ -121,7 +121,7 @@ $ sudo systemd-analyze cat-config /etc/systemd/logind.conf
 Scroll down and if you see your override config, then you good. Try to close and open your laptop's lid, It shouldn't do anything now.
 
 ### 2. Configure Sleep
-Same as before, we would need to make a override config for sleep.conf
+Same as before, you would need to make a override config for sleep.conf. (Configuration files is provided on the repository)
 ```
 $ sudo mkdir -p /etc/systemd/sleep.conf.d
 $ sudo nano /etc/systemd/sleep.conf.d/sleep_override.conf
@@ -150,3 +150,33 @@ And, you should test suspend-then-hibernate before you go further. You can chang
 $ sudo systemctl suspend-then-hibernate
 ```
 If it goes to Hibernate, you can go further.
+
+### 3. Configure Lid Event with ACPID
+First, you would need to install the ACPID if you haven't done it
+```
+$ sudo pacman -S acpid
+$ sudo systemctl enable --now acpid
+```
+Before creating the configuration, make sure ACPID listened to the event correctly. Run this command
+```
+$ sudo acpi_listen
+```
+Then, Close and Open your laptop's lid. If you see this text on your terminal, it means ACPID works as intended.
+```
+button/lid LID close
+button/lid LID open
+```
+Next is to make the ACPID Event Rule. Run this command (Configuration files is provided on the repository)
+```
+$ sudo nano /etc/acpi/events/lid
+```
+Then paste the text below into your /etc/acpi/events/lid
+```
+event=button/lid.*
+action=/usr/bin/systemctl suspend-then-hibernate
+```
+Apply the changes by restarting ACPID.
+```
+$ sudo systemctl restart acpid
+```
+Then you can try to Close and Open your laptop lid again, it should work perfectly now.
