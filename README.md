@@ -105,9 +105,9 @@ To start with, you will need to Configure Logind to make it ignore Lid Switch's 
 First, you will need to make the override config. (I have provided the files on the repository)
 ```
 $ sudo mkdir -p /etc/systemd/logind.conf.d
-$ sudo nano /etc/systemd/logind.conf.d/logind.override.conf
+$ sudo nano /etc/systemd/logind.conf.d/logind_override.conf
 ```
-Then put these on your logind.override.conf
+Then put these on your logind_override.conf
 ```
 [Login]
 HandleLidSwitch=ignore
@@ -119,3 +119,34 @@ Save it then restart your system, to ensure you configured it correctly. Run thi
 $ sudo systemd-analyze cat-config /etc/systemd/logind.conf
 ```
 Scroll down and if you see your override config, then you good. Try to close and open your laptop's lid, It shouldn't do anything now.
+
+### 2. Configure Sleep
+Same as before, we would need to make a override config for sleep.conf
+```
+$ sudo mkdir -p /etc/systemd/sleep.conf.d
+$ sudo nano /etc/systemd/sleep.conf.d/sleep_override.conf
+```
+Then put these on your sleep_override.conf
+```
+[Sleep]
+AllowSuspend=yes
+AllowHibernation=yes
+AllowSuspendThenHibernate=yes
+HibernateDelaySec=1h
+```
+Note: you can change how long it should be Suspended before going Hibernate by changing HibernateDelaySec's value. I suggest you not touch other parameters unless you know what you're doing.
+
+After that, you would need to execute this command to apply the changes
+```
+$ sudo systemctl daemon-reexec
+```
+Then, you could execute this command
+```
+$ sudo systemd-analyze cat-config /etc/systemd/sleep.conf
+```
+To check and make sure you configured your override config correctly.
+And, you should test suspend-then-hibernate before you go further. You can change the HibernateDelaySec to 10 (means 10 seconds), execute the command below and wait for around 12-15s before doing anything.
+```
+$ sudo systemctl suspend-then-hibernate
+```
+If it goes to Hibernate, you can go further.
