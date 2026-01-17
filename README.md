@@ -16,6 +16,7 @@ This setup was tested on:
 ## Table of Contents
 - [Overview](#arch-linux-suspend-then-hibernate-on-lid-close)
 - [Motivation](#motivation)
+- [Expected Results](#expected-results)
 - [Why This Fails](#why-this-fails)
 - [Solution](#solution)
 - [Issues](#issues)
