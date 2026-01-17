@@ -26,6 +26,17 @@ Coming from MacOS, I was used to closing the laptop lid and leaving the device f
 
 When attempting to achieve similar behavior on Arch Linux with GNOME, I found that lid close only triggered a regular suspend, even with Suspend-Then-Hibernate configured in logind.conf and I tried to work-around with it to significantly reduces long-term power usage while the laptop is closed.
 
+## Expected Results
+This configuration allows the laptop to maintain near-zero battery drain overnight. 
+
+| 1:00 AM (Start) | 8:00 AM (Wake up) | Power Statistics (0W Drain) |
+| :---: | :---: | :---: |
+| ![1AM Status](assets/1am.png) | ![8AM Status](assets/8am.png) | ![Power Graph](assets/graph.png) |
+
+**Key Observations:**
+* **Screen Time:** Notice the system "froze" the session state perfectly from 38m to 6h 48m later.
+* **Discharge Rate:** The Power Statistics graph shows a flat line at 0W during the hibernation period.
+
 ## Why This Fails 
 With minimal setup, you will only get suspend on lid close. Even if you are doing something like this on your logind.conf and sleep.conf
 ```Bash
