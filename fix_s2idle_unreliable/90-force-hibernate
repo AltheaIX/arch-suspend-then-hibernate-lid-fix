@@ -1,0 +1,29 @@
+#!/bin/sh
+
+logger "[force-hibernate] hook called: $1"
+
+# Time in second to stay in suspend before hibernating
+# 1800 = 30 minutes
+HIBERNATE_DELAY=1800
+
+case "$1" in
+  pre)
+    logger "[force-hibernate] pre-called"
+    rtcwake -m disable > /dev/null 2>&1
+    rtcwake -m no -s $HIBERNATE_DELAY
+    ;;
+  post)
+    ALARM_TIME=$(cat /sys/class/rtc/rtc0/wakealarm)
+    CURRENT_TIME=$(date +%s)
+
+    logger "[force-hibernate] post-resume detected"
+
+    if [ -z "$ALARM_TIME" ]; then
+        logger "[force-hibernate] hibernating"
+        /usr/lib/systemd/systemd-sleep hibernate
+    else
+	logger "[force-hibernate] interuppted"
+        rtcwake -m disable > /dev/null 2>&1
+    fi
+    ;;
+esac
