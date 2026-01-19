@@ -193,7 +193,7 @@ $ sudo nano /etc/acpi/events/lid
 ```
 Then paste the text below into your /etc/acpi/events/lid
 ```
-event=button/lid.*
+event=button/lid LID close
 action=/usr/bin/systemctl suspend-then-hibernate
 ```
 Apply the changes by restarting ACPID.
