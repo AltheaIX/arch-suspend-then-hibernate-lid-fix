@@ -206,4 +206,4 @@ Then you can try to Close and Open your laptop lid again, it should work perfect
 If you have issues with this setup, you could open a new issues on this repository.
 
 Known Issues:
-1. [Unreliable Suspend-Then-Hibernate - fix](https://github.com/AltheaIX/arch-suspend-then-hibernate-lid-fix/issues/1)
+1. [Unreliable Suspend-Then-Hibernate on s2idle Intel 11th Gen - fix](https://github.com/AltheaIX/arch-suspend-then-hibernate-lid-fix/issues/1)
