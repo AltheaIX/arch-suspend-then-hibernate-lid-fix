@@ -37,10 +37,12 @@ fi
 sudo mkdir -p /etc/acpi/events
 sudo tee /etc/acpi/events/lid > /dev/null <<EOF
 event=button/lid.*
-action=/usr/bin/systemctl suspend-then-hibernate
+action=/usr/bin/systemctl suspend-then-hibernate --ignore-inhibitors
 EOF
 
 sudo systemctl enable --now acpid
+
+sudo systemctl restart acpid
 
 echo "--- Installation Complete ---"
 echo "IMPORTANT: Make sure hibernation (swap + resume) is properly configured!"
