@@ -15,12 +15,30 @@ This setup was tested on:
 
 ## Table of Contents
 - [Overview](#arch-linux-suspend-then-hibernate-on-lid-close)
+- [Installation](#installation)
 - [Motivation](#motivation)
 - [Expected Results](#expected-results)
 - [Why This Fails](#why-this-fails)
 - [Solution](#solution)
 - [Issues](#issues)
 
+## Installation
+Download files from [here](https://github.com/AltheaIX/arch-suspend-then-hibernate-lid-fix/releases/latest). And, make it executeable by running this command,
+```Bash
+$ chmod +x install.sh
+```
+Then, just run the install.sh with
+```Bash
+$ ./install.sh
+```
+Then, you could test it first. Try to closing your lid or manually suspend it, if it doesnt works or built-in's sleep-then-hibernate is not reliable (sometimes works and sometimes not), you can install the fix patch.
+```Bash
+$ chmod +x patch_s2idle.sh
+```
+```Bash
+$ ./patch_s2idle.sh
+```
+And, have fun!
 
 ## Motivation
 Coming from MacOS, I was used to closing the laptop lid and leaving the device for days with almost no battery drain.
